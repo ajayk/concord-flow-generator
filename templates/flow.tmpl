@@ -1,0 +1,22 @@
+# ------------------------------------------------------------------------------
+# {{ .FlowName }} Flow
+# ------------------------------------------------------------------------------
+flows:
+  {{  .FlowName }}:
+    - call: helmUpgrade
+      in:
+        release: "{{ .FlowName}}"
+        chart: "{{.ChartReference}}"
+        values: "${profile}/{{  .FlowName }}"
+        version: "{{ .ChartVersion }}"
+        namespace: "{{ .Namespace }}"
+
+  {{  .FlowName }}Delete:
+    - call: helmDelete
+      in:
+        release: "{{ .FlowName}}"
+        namespace: "{{ .Namespace }}"
+
+  {{ .FlowName}}Reinstall:
+    - call:{{  .FlowName }}Delete
+    - call:{{  .FlowName }}
